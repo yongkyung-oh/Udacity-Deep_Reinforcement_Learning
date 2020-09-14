@@ -1,5 +1,5 @@
-# Udacity-AI_for_trading
-Project Repository for Udacity AI_for_Trading Nanodegree
+# Udacity-Deep_Reinforcement_Learning
+Project Repository for Udacity Deep_Reinforcement_Learning Nanodegree
 
 - Original Repository: https://github.com/udacity/deep-reinforcement-learning
 - Reference Repository: [dalmia](https://github.com/dalmia/udacity-deep-reinforcement-learning), [ishgirwan](https://github.com/ishgirwan/udacity_drlnd), [JpMCarrilho](https://github.com/JpMCarrilho/deep-reinforcement-learning-nanodegree), [vmelan](https://github.com/vmelan/DRLND-udacity)
