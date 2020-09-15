@@ -34,11 +34,16 @@ The task is episodic, and in order to solve the environment, your agent must get
 
 2. Place the file in the DRLND GitHub repository, in the `p1_navigation/` folder, and unzip (or decompress) the file. 
 
+Or, instead of that, using this repository and using [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Linux_NoVis.zip).
+
+`git clone https://github.com/yongkyung-oh/Udacity-Deep_Reinforcement_Learning.git`
+
+
 ### Instructions
 
 Follow the instructions in `Navigation.ipynb` to get started with training your own agent!  
 
-Install depencies: using `pip install -r requirments.txt`. 
+Install depencies: using `pip install -r requirements.txt`. 
 
 ### (Optional) Challenge: Learning from Pixels
 

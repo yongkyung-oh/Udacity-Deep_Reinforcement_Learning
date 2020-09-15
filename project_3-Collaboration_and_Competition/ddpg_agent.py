@@ -97,6 +97,7 @@ class Agent():
         return np.clip(action, -1, 1)
     
     def reset(self):
+        """Reset the noise"""
         self.noise.reset()
         
     def learn(self, experiences, gamma):
@@ -142,8 +143,15 @@ class Agent():
         self.soft_update(self.critic_local, self.critic_target, TAU)
         self.soft_update(self.actor_local, self.actor_target, TAU)
         # update epsilon decay
-        if EPSILON_DECAY > 0:
-            self.epsilon -= EPSILON_DECAY
+        #if EPSILON_DECAY > 0:
+        #    self.epsilon -= EPSILON_DECAY
+        #    self.noise.reset()
+
+        self.epsilon -= EPSILON_DECAY
+        self.noise.reset()
+
+        if EPSILON_DECAY =< 0:
+            self.epsilon = 0
             self.noise.reset()
             
     def soft_update(self, local_model, target_model, tau):
