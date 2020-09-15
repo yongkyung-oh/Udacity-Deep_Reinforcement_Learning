@@ -17,11 +17,11 @@ GAMMA = 0.99           # discount factor
 TAU = 2e-3             # for soft update of target parameters
 LR_ACTOR = 1e-3        # learning rate of the actor
 LR_CRITIC = 1e-3       # learning rate of the critic
-WEIGHT_DECAY = 0       # L2 weight decay
+WEIGHT_DECAY = 1e-6    # L2 weight decay
 
-LEARN_EVERY = 1       # learning timestep interval
-LEARN_NUM = 10            # number of learning passes
-GRAD_CLIPPING = 1.0         # gradient clipping 
+LEARN_EVERY = 1        # learning timestep interval
+LEARN_NUM = 10         # number of learning passes
+GRAD_CLIPPING = 1.0    # gradient clipping 
 
 # Ornstein-Uhlenbeck noise parameters
 OU_SIGMA = 0.1
@@ -30,8 +30,7 @@ OU_THETA = 0.15
 EPSILON = 1.0         # for epsilon in the noise process (act step)
 EPSILON_DECAY = 1e-6
 
-
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu") #use cuda:1 due to hardware error
 
 class Agent():
     """Interacts with and learns from the environment"""
@@ -56,12 +55,14 @@ class Agent():
         self.actor_local = Actor(state_size, action_size, random_seed).to(device)
         self.actor_target = Actor(state_size, action_size, random_seed).to(device)
         self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=LR_ACTOR)
+        #self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=LR_ACTOR, weight_decay=WEIGHT_DECAY)
         
         # Critic network
         self.critic_local = Critic(state_size, action_size, random_seed).to(device)
         self.critic_target = Critic(state_size, action_size, random_seed).to(device)
+        #self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
-        
+
         # Noise process
         self.noise = OUNoise(action_size, random_seed)
         
@@ -157,26 +158,28 @@ class Agent():
         """
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)
+
             
 class OUNoise:
-    """Ornsten-Uhlenbeck process to add noise"""
-    def __init__(self, size, seed, mu=0., theta=OU_THETA, sigma=OU_SIGMA):
-        """Initialize parameters and noise process"""
+    """Ornstein-Uhlenbeck process."""
+    def __init__(self, size, seed, mu=0., theta=0.15, sigma=0.2):
+        """Initialize parameters and noise process."""
         self.mu = mu * np.ones(size)
         self.theta = theta
         self.sigma = sigma
-        self.seed = random.seed(seed)
+        self.seed = np.random.seed(seed)
+        random.seed(seed)
         self.reset()
-        
+
     def reset(self):
         """Reset the internal state (= noise) to mean (mu)."""
         self.state = copy.copy(self.mu)
-        
+
     def sample(self):
-        """Update internal state and return it as a noise sample"""
+        """Update internal state and return it as a noise sample."""
         x = self.state
-        # dx = self.theta * (self.mu - x) + self.sigma * np.array([random.random() for i in range(len(x))])
-        self.state = x + np.random.normal(self.mu, self.sigma)
+        dx = self.theta * (self.mu - x) + self.sigma * np.array([np.random.random() for i in range(len(x))])
+        self.state = x + dx
         return self.state
     
     

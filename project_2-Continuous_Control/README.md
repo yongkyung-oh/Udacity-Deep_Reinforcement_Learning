@@ -66,6 +66,8 @@ The environment is considered solved, when the average (over 100 episodes) of th
 
 Follow the instructions in `Continuous_Control.ipynb` to get started with training your own agent!  
 
+Install depencies: using `pip install -r requirments.txt`. 
+
 ### (Optional) Challenge: Crawler Environment
 
 After you have successfully completed the project, you might like to solve the more difficult **Crawler** environment.
